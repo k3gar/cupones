@@ -1,0 +1,39 @@
+@font-face {
+	font-family: 'Ano';
+	src: url(../../assets/fonts/AnoRegular-Regular.woff2) format('woff2'),
+	url(../../assets/fonts/AnoRegular-Regular.woff) format('woff');
+	font-weight: normal;
+	font-style: normal;
+}
+
+@font-face {
+	font-family: 'Ano';
+	src: url(../../assets/fonts/AnoBold-Regular.woff2) format('woff2'),
+	url(../../assets/fonts/AnoBold-Regular.woff) format('woff');
+	font-weight: bold;
+	font-style: normal;
+}
+
+@font-face {
+	font-family: 'Ano';
+	src: url(../../assets/fonts/AnoBold-Italic.woff2) format('woff2'),
+	url(../../assets/fonts/AnoBold-Italic.woff) format('woff');
+	font-weight: bold;
+	font-style: italic;
+}
+
+@font-face {
+	font-family: 'Ano';
+	src: url(../../assets/fonts/AnoBlack-Regular.woff2) format('woff2'),
+	url(../../assets/fonts/AnoBlack-Regular.woff) format('woff');
+	font-weight: 900;
+	font-style: normal;
+}
+
+@font-face {
+	font-family: 'Ano';
+	src: url(../../assets/fonts/AnoBlack-Italic.woff2) format('woff2'),
+	url(../../assets/fonts/AnoBlack-Italic.woff) format('woff');
+	font-weight: 900;
+	font-style: italic;
+}
