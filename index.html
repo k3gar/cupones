@@ -12,7 +12,7 @@
 <body>
     <div id="app">
         <div class="gallery" v-if="estado">
-                <div class="card" @click="toggleDetails(promos.id)" :class="{ 'card-clicked': clickedPromoId === promos.id }">
+                <div class="card card-active" @click="toggleDetails(promos.id)" :class="{ 'card-clicked': clickedPromoId === promos.id }">
                     <img src="./assets/siman adviento/1dec.png" class="card-img-top" :alt="promos.title">
                     <div class="details">
                         <section class="details-container">

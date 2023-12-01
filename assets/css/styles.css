@@ -204,6 +204,10 @@ label:hover {
   border: none !important;
 }
 
+.card-active{
+  cursor: pointer;
+}
+
 .details p {
   overflow-x: auto;
 }
