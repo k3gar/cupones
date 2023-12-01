@@ -287,6 +287,11 @@ label:hover {
   height: 50px;
   margin: auto;
 }
+
+.grayscale {
+  filter: grayscale(100%);
+}
+
 @media screen and (max-width:625px) {
   .gallery{
     grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));

@@ -4,85 +4,122 @@ new Vue({
       estado: false,
       promos: [],
       promosFiltradas: [],
+      promosFiltradasSV: [],
+      promosFiltradasGT: [],
+      promosFiltradasNI: [],
+      promosFiltradasCR: [],
       clickedPromoId: null,
       contador: 0,
-      /* endDate: new Date('2023-12-02T00:00:00.000Z').getTime(), */
-      /* now: new Date().getTime(), */
 
     }
   },
   methods:{
-    getImageUrlStrapi(image){
-      const img = image.attributes.main_logo.data.attributes.url;
+    toggleDetails(promoId, startDate, endDate) {
+      const isActiveToday = this.isPromoActive(startDate, endDate).isActive;
       
-      return 'https://dev-strapi-6369.onrender.com' + img
-    },
-    
-    toggleDetails(promoId) {
-      if (this.clickedPromoId === promoId) {
-        this.clickedPromoId = null; // Si ya se hizo clic, oculta los detalles
+      if (this.clickedPromoId === promoId && isActiveToday) {
+        this.clickedPromoId = null; // Si ya se hizo clic y está activa hoy, oculta los detalles
       } else {
-        this.clickedPromoId = promoId; // Si no se hizo clic, muestra los detalles
+        this.clickedPromoId = isActiveToday ? promoId : null; // Si está activa hoy, muestra los detalles
       }
     },
-    getPromoCountdown() {
-      const endDate = new Date('2023-12-02T06:00:00.000Z').getTime();
+    getPromoCountdown(startDate, endDate) {
       const now = new Date().getTime();
-      const timeRemaining = endDate - now;
-      // Verificar si la fecha actual es antes de la fecha de finalización
-      if (now < endDate) {
+      const startDateTime = new Date(startDate).getTime();
+      const endDateTime = new Date(endDate).getTime();
+  
+      // Verificar si la fecha actual está entre la fecha de inicio y la fecha de fin
+      if (now >= startDateTime && now <= endDateTime) {
+        const timeRemaining = endDateTime - now;
+  
         // Calcular horas, minutos y segundos
         const hours = Math.floor(timeRemaining / (1000 * 60 * 60));
         const minutes = Math.floor((timeRemaining % (1000 * 60 * 60)) / (1000 * 60));
         const seconds = Math.floor((timeRemaining % (1000 * 60)) / 1000);
-    
+  
         return `${hours}h ${minutes}m ${seconds}s`;
       } else {
-        // Si la fecha actual es después de la fecha de finalización, no mostrar el contador
+        // Si la fecha actual está fuera del rango de la promoción, no mostrar el contador
         return null;
       }
+    },
+    isPromoActive(startDate, endDate) {
+      const now = new Date().getTime();
+      const startDateTime = new Date(startDate).getTime();
+      const endDateTime = new Date(endDate).getTime();
+    
+      // Verificar si la fecha actual está dentro del rango de la promoción
+      const isActive = now >= startDateTime && now <= endDateTime;
+    
+      // Verificar si la promoción ha finalizado
+      const hasEnded = now > endDateTime;
+    
+      // Verificar si falta menos de 24 horas para la finalización
+      const hoursRemaining = (endDateTime - now) / (1000 * 60 * 60);
+      const isWithin24Hours = hoursRemaining < 24 && hoursRemaining > 0; // Cambiado aquí
+    
+      return { isActive, hasEnded, isWithin24Hours };
     }
-
+  
   },
 
-  mounted(){
+  mounted() {
+    fetch('https://strapi-master-prd-redis-eqjekncm6q-ue.a.run.app/api/advientos?populate[0]=*&populate[1]=backgrounds.bg_media&populate[2]=backgrounds.bg_media_mobile&populate[3]=cards&populate[4]=cards.product_image&populate[5]=cards.cover_image&populate[6]=cards.bg_image&populate[7]=region_settings&populate[8]=main_logo')
+      .then(response => response.json())
+      .then(data => {
+        // Asumiendo que cada elemento en data.data es un país con sus propias cards
+        const promosPorPais = data.data;
 
-    fetch('https://strapi-master-prd-redis-eqjekncm6q-ue.a.run.app/api/advientos?populate=*')
-    .then(response => response.json())
-    .then(data => {
-      //If the state is equal to true, and validate the start and end date of the promotion.
-      //this.promos = data.data.filter((promo) => promo.attributes.Estado == true && promo.attributes.FechaInicio <= new Date().toISOString().split('T')[0] && promo.attributes.FechaFinaliza >= new Date().toISOString().split('T')[0]),
-    
-      //Where the state is equal to true, only the active promotions are filtered and saved
-      this.promos = data.data[0].attributes.cards,
+        // Obtener información de cada país
+        this.promosFiltradas = promosPorPais.map(pais => {
+          const cards = pais.attributes.cards || [];
+          
+          const promos = cards.map(promo => {
+            const productImageData = promo.product_image.data;
+            return {
+              id: promo.id,
+              title: promo.title,
+              description: promo.description,
+              startDate: promo.start_date,
+              endDate: promo.end_date,
+              coupon: promo.coupon,
+              coverImage: promo.cover_image.data.attributes.url,
+              productImage: productImageData ? productImageData.attributes.url : "https://siman.vtexassets.com/assets/vtex.file-manager-graphql/images/a2cc640d-04c5-4d7c-94a4-3e96fb18daa1___ab337472217644aad78268909ac9c42e.svg",
+            };
+          });
 
-      this.promos.length > 0
-        ? (
-            this.estado = true,
-            
-            //The promotions are filtered and saved in clean array
-            this.promosFiltradas = this.promos.map((promo ) => {
-                return {
-                id: promo.id,
-                startDate: promo.start_date,
-                endDate: promo.end_date,
-                /* imagePromotion: 'https://dev-strapi-6369.onrender.com' + promo.attributes.main_logo.data.attributes.url, */
-                // Nuevos campos
-/*                 cardTitle: promo.attributes.cards[0].title,
-                cardDescription: promo.attributes.cards[0].description,
-                cardStartDate: promo.attributes.cards[0].start_date,
-                cardEndDate: promo.attributes.cards[0].end_date,
-                cardIsVisible: promo.attributes.cards[0].isVisible,
-                cardCoupon: promo.attributes.cards[0].coupon, */
-                }
+          // Filtrar solo los países con promociones
+          if (promos.length > 0) {
+            this.estado = true;
 
-            }) 
-          )
-        : this.estado = false
-      //For debugging
-      //console.log(this.promosFiltradas)
-      //console.log(this.estado)
-    })
+            // Organizar promociones en arrays diferentes según el país
+            switch (pais.id) {
+              case 1: // SV
+                this.promosFiltradasSV = promos;
+                break;
+              case 2: // GT
+                this.promosFiltradasGT = promos;
+                break;
+              case 3: // NI
+                this.promosFiltradasNI = promos;
+                break;
+              case 4: // CR
+                this.promosFiltradasCR = promos;
+                break;
+              // Puedes agregar más casos según sea necesario
+            }
+          }
+
+          return {
+            idPais: pais.id,
+            promos,
+          };
+        });
+
+        console.log(this.promosFiltradasSV, "SV")
+      });
+
+
 
     setInterval(() => {
       this.now = new Date().getTime();
