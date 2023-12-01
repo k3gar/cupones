@@ -287,3 +287,32 @@ label:hover {
   height: 50px;
   margin: auto;
 }
+@media screen and (max-width:625px) {
+  .gallery{
+    grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+  }
+  .card{
+    width: 160px;
+    height: 160px;
+  }
+  .details-container__title{
+    font-size: 14px;
+  }
+  .details-container__text {
+    font-size: 12px;
+    margin-bottom: 4px;
+  }
+  .details-container__coupon{
+    font-size: 14px;
+  }
+  .details-container__countdown{
+    font-size: 14px;
+  }
+  .details-container__coupon-tittle{
+    font-size: 12px;
+  }
+  .details-container__image{
+    width: 35px;
+    height: 35px;
+  }
+}
