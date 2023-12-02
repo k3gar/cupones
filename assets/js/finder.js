@@ -104,13 +104,13 @@ new Vue({
               case 1: // SV
                 this.promosFiltradasSV = promos.filter(promo => new Date(promo.startDate).getTime() >= new Date().getTime() - (48 * 60 * 60 * 1000));
                 break;
-              case 2: // GT
+              case 5: // GT
                 this.promosFiltradasGT = promos.filter(promo => new Date(promo.startDate).getTime() >= new Date().getTime() - (48 * 60 * 60 * 1000));
                 break;
-              case 3: // NI
+              case 7: // NI
                 this.promosFiltradasNI = promos.filter(promo => new Date(promo.startDate).getTime() >= new Date().getTime() - (48 * 60 * 60 * 1000));
                 break;
-              case 4: // CR
+              case 6: // CR
                 this.promosFiltradasCR = promos.filter(promo => new Date(promo.startDate).getTime() >= new Date().getTime() - (48 * 60 * 60 * 1000));
                 break;
               // Puedes agregar más casos según sea necesario
@@ -122,8 +122,6 @@ new Vue({
             promos,
           };
         });
-
-        console.log(this.promosFiltradasSV, "SV")
       });
 
 
