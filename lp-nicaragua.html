@@ -4,7 +4,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
-    <title>Siman Adviento</title>
+    <title>Calendario de Adviento</title>
     <link rel="stylesheet" href="assets/bootstrap/css/bootstrap.min.css">
     <link rel="stylesheet" href="assets/css/styles.css">
 </head>
@@ -12,103 +12,29 @@
 <body>
     <div id="app">
         <div class="gallery" v-if="estado">
-                <div class="card card-active" @click="toggleDetails(promos.id)" :class="{ 'card-clicked': clickedPromoId === promos.id }">
-                    <img src="./assets/siman adviento/1dec.png" class="card-img-top" :alt="promos.title">
-                    <div class="details">
-                        <section class="details-container">
-                            <p class="details-container__title">¡Envío Gratis!</p>
-                            <p class="details-container__text">Compras mayores a $50</p>
-                            <img class="details-container__image" src="https://storage.googleapis.com/strapi-siman-uploads/free_delivery_b2e267e039/free_delivery_b2e267e039.png" alt="Promotion image" srcset="">
-                            <span class="details-container__coupon-tittle">Cupón</span>
-                            <p class="details-container__coupon">
-                                ENVIONI</p>
-                            <p class="details-container__countdown" v-if="getPromoCountdown()">{{ getPromoCountdown() }}</p>
-                            
-                        </section>
-                    </div>                  
-                </div>
-            
-                <div class="card">
-                    <img src="./assets/siman adviento/2dec.png" class="card-img-top" :alt="promos.title">
-                  
-                </div>
-                <div class="card">
-                    <img src="./assets/siman adviento/3dec.png"  class="card-img-top" :alt="promos.title">
-                  
-                </div>
-                <div class="card">
-                    <img src="./assets/siman adviento/4dec.png" class="card-img-top" :alt="promos.title">
-                </div>
-                <div class="card">
-                    <img src="./assets/siman adviento/5dec.png" class="card-img-top" alt="Promoción del 5 de diciembre">
-                </div>
-                <div class="card">
-                    <img src="./assets/siman adviento/6dec.png" class="card-img-top" alt="Promoción del 6 de diciembre">
-                </div>
-                <div class="card">
-                    <img src="./assets/siman adviento/7dec.png" class="card-img-top" alt="Promoción del 7 de diciembre">
-                </div>
-                <div class="card">
-                    <img src="./assets/siman adviento/8dec.png" class="card-img-top" alt="Promoción del 8 de diciembre">
-                </div>
-                <div class="card">
-                    <img src="./assets/siman adviento/9dec.png" class="card-img-top" alt="Promoción del 9 de diciembre">
-                </div>
-                <div class="card">
-                    <img src="./assets/siman adviento/10dec.png" class="card-img-top" alt="Promoción del 10 de diciembre">
-                </div>
-                <div class="card">
-                    <img src="./assets/siman adviento/11dec.png" class="card-img-top" alt="Promoción del 11 de diciembre">
-                </div>
-                <div class="card">
-                    <img src="./assets/siman adviento/12dec.png" class="card-img-top" alt="Promoción del 12 de diciembre">
-                </div>
-                <div class="card">
-                    <img src="./assets/siman adviento/13dec.png" class="card-img-top" alt="Promoción del 13 de diciembre">
-                </div>
-                <div class="card">
-                    <img src="./assets/siman adviento/14dec.png" class="card-img-top" alt="Promoción del 14 de diciembre">
-                </div>
-                <div class="card">
-                    <img src="./assets/siman adviento/15dec.png" class="card-img-top" alt="Promoción del 15 de diciembre">
-                </div>
-                <div class="card">
-                    <img src="./assets/siman adviento/16dec.png" class="card-img-top" alt="Promoción del 16 de diciembre">
-                </div>
-                <div class="card">
-                    <img src="./assets/siman adviento/17dec.png" class="card-img-top" alt="Promoción del 17 de diciembre">
-                </div>
-                <div class="card">
-                    <img src="./assets/siman adviento/18dec.png" class="card-img-top" alt="Promoción del 18 de diciembre">
-                </div>
-                <div class="card">
-                    <img src="./assets/siman adviento/19dec.png" class="card-img-top" alt="Promoción del 19 de diciembre">
-                </div>
-                <div class="card">
-                    <img src="./assets/siman adviento/20dec.png" class="card-img-top" alt="Promoción del 20 de diciembre">
-                </div>
-                <div class="card">
-                    <img src="./assets/siman adviento/21dec.png" class="card-img-top" alt="Promoción del 21 de diciembre">
-                </div>
-                <div class="card">
-                    <img src="./assets/siman adviento/22dec.png" class="card-img-top" alt="Promoción del 22 de diciembre">
-                </div>
-                <div class="card">
-                    <img src="./assets/siman adviento/23dec.png" class="card-img-top" alt="Promoción del 23 de diciembre">
-                </div>
-                <div class="card">
-                    <img src="./assets/siman adviento/24dec.png" class="card-img-top" alt="Promoción del 24 de diciembre">
-                </div>
-
-        </div>
-
-        <div class="container" v-else>
-            <div class="row">
-                <div class="col-md-12">
+            <div class="card" v-for="promos in promosFiltradasNI"
+                @click="toggleDetails(promos.id, promos.startDate, promos.endDate)"
+                :class="['card', { 'card-clicked': clickedPromoId === promos.id && isPromoActive(promos.startDate, promos.endDate).isActive }, { 'card-expired': isPromoActive(promos.startDate, promos.endDate).hasEnded }]"
+                :style="{ 'cursor': isPromoActive(promos.startDate, promos.endDate).isActive ? 'pointer' : 'default' }">
+                <img :src="promos.coverImage" class="card-img-top" :alt="promos.title">
+                <div v-if="isPromoActive(promos.startDate, promos.endDate) && clickedPromoId === promos.id"
+                    class="details">
+                    <section class="details-container">
+                        <p class="details-container__title">{{promos.title}}</p>
+                        <p class="details-container__text">{{promos.description}}</p>
+                        <img class="details-container__image" :src="promos.productImage" alt="Promotion image"
+                            srcset="">
+                        <span class="details-container__coupon-tittle">Cupón</span>
+                        <p class="details-container__coupon">
+                            {{promos.coupon}}</p>
+                        <p class="details-container__countdown"
+                            v-if="getPromoCountdown(promos.startDate, promos.endDate)">
+                            {{ getPromoCountdown(promos.startDate, promos.endDate) }}
+                        </p>
+                    </section>
                 </div>
             </div>
         </div>
-
     </div>
 
     <script src="assets/bootstrap/js/bootstrap.min.js"></script>

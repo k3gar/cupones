@@ -4,7 +4,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
-    <title>Promociones Credisiman VISA</title>
+    <title>Calendario de Adviento</title>
     <link rel="stylesheet" href="assets/bootstrap/css/bootstrap.min.css">
     <link rel="stylesheet" href="assets/css/styles.css">
 </head>
@@ -12,27 +12,29 @@
 <body>
     <div id="app">
         <div class="gallery" v-if="estado">
-            <div class="card" v-for="promos in promosFiltradasSV" @click="toggleDetails(promos.id, promos.startDate, promos.endDate)" :class="{ 'card-clicked': clickedPromoId === promos.id && isPromoActive(promos.startDate, promos.endDate).isActive }">
-                    <img :src="promos.coverImage" class="card-img-top" :alt="promos.title">
-                    <div v-if="isPromoActive(promos.startDate, promos.endDate) && clickedPromoId === promos.id" class="details">
-                        <section class="details-container">
-                            <p class="details-container__title">{{promos.title}}</p>
-                            <p class="details-container__text">{{promos.description}}</p>
-                            <img class="details-container__image" :src="promos.productImage" alt="Promotion image" srcset="">
-                            <span class="details-container__coupon-tittle">Cupón</span>
-                            <p class="details-container__coupon">
-                                {{promos.coupon}}</p>
-                                <p class="details-container__countdown" v-if="getPromoCountdown(promos.startDate, promos.endDate)">
-                                    {{ getPromoCountdown(promos.startDate, promos.endDate) }}
-                                </p>    
-                            
-                        </section>
-                    </div>                   
+            <div class="card" v-for="promos in promosFiltradasSV"
+                @click="toggleDetails(promos.id, promos.startDate, promos.endDate)"
+                :class="['card', { 'card-clicked': clickedPromoId === promos.id && isPromoActive(promos.startDate, promos.endDate).isActive }, { 'card-expired': isPromoActive(promos.startDate, promos.endDate).hasEnded }]"
+                :style="{ 'cursor': isPromoActive(promos.startDate, promos.endDate).isActive ? 'pointer' : 'default' }">
+                <img :src="promos.coverImage" class="card-img-top" :alt="promos.title">
+                <div v-if="isPromoActive(promos.startDate, promos.endDate) && clickedPromoId === promos.id"
+                    class="details">
+                    <section class="details-container">
+                        <p class="details-container__title">{{promos.title}}</p>
+                        <p class="details-container__text">{{promos.description}}</p>
+                        <img class="details-container__image" :src="promos.productImage" alt="Promotion image"
+                            srcset="">
+                        <span class="details-container__coupon-tittle">Cupón</span>
+                        <p class="details-container__coupon">
+                            {{promos.coupon}}</p>
+                        <p class="details-container__countdown"
+                            v-if="getPromoCountdown(promos.startDate, promos.endDate)">
+                            {{ getPromoCountdown(promos.startDate, promos.endDate) }}
+                        </p>
+                    </section>
                 </div>
+            </div>
         </div>
-        <div class="container" v-else>
-        </div>
-
     </div>
 
     <script src="assets/bootstrap/js/bootstrap.min.js"></script>

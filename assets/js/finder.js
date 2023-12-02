@@ -59,7 +59,14 @@ new Vue({
       const isWithin24Hours = hoursRemaining < 24 && hoursRemaining > 0; // Cambiado aquí
     
       return { isActive, hasEnded, isWithin24Hours };
-    }
+    },
+    shouldRenderPromo(promo) {
+      const now = new Date().getTime();
+      const startDateTime = new Date(promo.startDate).getTime();
+      const endDateTime = new Date(promo.endDate).getTime() - 24 * 60 * 60 * 1000; // Restar 24 horas
+  
+      return startDateTime <= now && now <= endDateTime;
+    },
   
   },
 
@@ -95,16 +102,16 @@ new Vue({
             // Organizar promociones en arrays diferentes según el país
             switch (pais.id) {
               case 1: // SV
-                this.promosFiltradasSV = promos;
+                this.promosFiltradasSV = promos.filter(promo => new Date(promo.startDate).getTime() >= new Date().getTime() - (48 * 60 * 60 * 1000));
                 break;
               case 2: // GT
-                this.promosFiltradasGT = promos;
+                this.promosFiltradasGT = promos.filter(promo => new Date(promo.startDate).getTime() >= new Date().getTime() - (48 * 60 * 60 * 1000));
                 break;
               case 3: // NI
-                this.promosFiltradasNI = promos;
+                this.promosFiltradasNI = promos.filter(promo => new Date(promo.startDate).getTime() >= new Date().getTime() - (48 * 60 * 60 * 1000));
                 break;
               case 4: // CR
-                this.promosFiltradasCR = promos;
+                this.promosFiltradasCR = promos.filter(promo => new Date(promo.startDate).getTime() >= new Date().getTime() - (48 * 60 * 60 * 1000));
                 break;
               // Puedes agregar más casos según sea necesario
             }
