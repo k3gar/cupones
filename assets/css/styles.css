@@ -176,6 +176,11 @@ label:hover {
   opacity: 0;
   transition: 0.5s ease;
   border-radius: 0.25rem;
+  opacity: 0;
+  transform: translateY(50px);
+  animation: fadeInUp 0.5s ease-in-out forwards;
+  /* forwards mantiene el estado final de la animación después de que termine */
+  transition: opacity 0.5s ease-in-out;
 }
 
 .details h4 {
@@ -293,6 +298,18 @@ label:hover {
   opacity: 0.7;
   filter: grayscale(100%);
 }
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(50px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
 
 
 @media screen and (max-width:625px) {
