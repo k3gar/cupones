@@ -13,7 +13,7 @@
     <div id="app">
         <div class="gallery" v-if="estado">
             <div class="card" v-for="promos in promosFiltradasSV"
-                @click="toggleDetails(promos.id, promos.startDate, promos.endDate)"
+                @click="toggleDetails(promos.id, promos.startDate, promos.endDate, promos.coupon)"
                 :class="['card', { 'card-clicked': clickedPromoId === promos.id && isPromoActive(promos.startDate, promos.endDate).isActive }, { 'card-expired': isPromoActive(promos.startDate, promos.endDate).hasEnded }]"
                 :style="{ 'cursor': isPromoActive(promos.startDate, promos.endDate).isActive ? 'pointer' : 'default' }">
                 <img :src="promos.coverImage" class="card-img-top" :alt="promos.title">
@@ -40,6 +40,7 @@
     <script src="assets/bootstrap/js/bootstrap.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/vue@2/dist/vue.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/lodash.js/4.17.11/lodash.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script src="assets/js/finder.js"></script>
 </body>
 

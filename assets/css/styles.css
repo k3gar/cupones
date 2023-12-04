@@ -299,6 +299,16 @@ label:hover {
   filter: grayscale(100%);
 }
 
+.custom-title-class {
+  font-size: 20px; /* Cambiar el tamaño de la fuente del título */
+  color: green;   /* Cambiar el color del texto del título */
+}
+
+.custom-content-class {
+  font-size: 16px; /* Cambiar el tamaño de la fuente del contenido */
+  color: red;     /* Cambiar el color del texto del contenido */
+}
+
 @keyframes fadeInUp {
   from {
     opacity: 0;

@@ -14,13 +14,29 @@ new Vue({
     }
   },
   methods:{
-    toggleDetails(promoId, startDate, endDate) {
+    toggleDetails(promoId, startDate, endDate, coupon) {
       const isActiveToday = this.isPromoActive(startDate, endDate).isActive;
-      
+  
       if (this.clickedPromoId === promoId && isActiveToday) {
-        this.clickedPromoId = null; // Si ya se hizo clic y está activa hoy, oculta los detalles
+        this.clickedPromoId = null; // Oculta los detalles si ya se hizo clic y está activa hoy
       } else {
-        this.clickedPromoId = isActiveToday ? promoId : null; // Si está activa hoy, muestra los detalles
+        this.clickedPromoId = isActiveToday ? promoId : null; // Muestra los detalles si está activa hoy
+  
+        // Si está activa hoy, copia el código de la promoción al portapapeles
+        if (isActiveToday) {
+          this.copyToClipboard(coupon);
+          
+          Swal.fire({
+            icon: 'success',
+            title: 'Código copiado al portapapeles',
+            showConfirmButton: false,
+            timer: 1500 , // El mensaje se mostrará durante 1.5 segundos
+            customClass: {
+              title: 'custom-title-class',
+              content: 'custom-content-class'
+            }
+          });
+        }
       }
     },
     getPromoCountdown(startDate, endDate) {
@@ -66,6 +82,14 @@ new Vue({
       const endDateTime = new Date(promo.endDate).getTime() - 24 * 60 * 60 * 1000; // Restar 24 horas
   
       return startDateTime <= now && now <= endDateTime;
+    },
+    copyToClipboard(text) {
+      const textarea = document.createElement('textarea');
+      textarea.value = text;
+      document.body.appendChild(textarea);
+      textarea.select();
+      document.execCommand('copy');
+      document.body.removeChild(textarea);
     },
   
   },
