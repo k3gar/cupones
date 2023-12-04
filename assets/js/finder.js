@@ -25,17 +25,20 @@ new Vue({
         // Si está activa hoy, copia el código de la promoción al portapapeles
         if (isActiveToday) {
           this.copyToClipboard(coupon);
-          
-          Swal.fire({
-            icon: 'success',
-            title: 'Código copiado al portapapeles',
-            showConfirmButton: false,
-            timer: 1500 , // El mensaje se mostrará durante 1.5 segundos
-            customClass: {
-              title: 'custom-title-class',
-              content: 'custom-content-class'
-            }
-          });
+
+          setTimeout(() => {
+            Swal.fire({
+              icon: 'success',
+              position: "top",
+              title: 'Código copiado al portapapeles',
+              showConfirmButton: false,
+              timer: 1500 , // El mensaje se mostrará durante 1.5 segundos
+              customClass: {
+                title: 'custom-title-class',
+                content: 'custom-content-class'
+              }
+            });
+          }, 1500)
         }
       }
     },
