@@ -129,7 +129,7 @@ new Vue({
       .then(data => {
         // Asumiendo que cada elemento en data.data es un país con sus propias cards
         const promosPorPais = data.data;
-        console.log(promosPorPais)
+        //console.log(promosPorPais)
 
         // Obtener información de cada país
         this.promosFiltradas = promosPorPais.map(pais => {
