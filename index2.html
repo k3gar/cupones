@@ -22,8 +22,14 @@
                     <section class="details-container">
                         <p class="details-container__title">{{promos.title}}</p>
                         <p class="details-container__text">{{promos.description}}</p>
-                        <a :href="promos.link || ''"><img class="details-container__image" :src="promos.productImage" alt="Promotion image"
-                            srcset=""></a>
+                        <div v-if="promos.link">
+                            <a :href="promos.link">
+                              <img class="details-container__image" :src="promos.productImage" alt="Promotion image" srcset="">
+                            </a>
+                          </div>
+                          <div v-else>
+                            <img class="details-container__image" :src="promos.productImage" alt="Promotion image" srcset="">
+                          </div>
                         <span class="details-container__coupon-tittle">Cupón</span>
                         <p class="details-container__coupon" @click="copyCoupon(promos.coupon)">
                             {{promos.coupon}} <img src="https://siman.vtexassets.com/assets/vtex.file-manager-graphql/images/0451b3b9-7494-4a04-b3a7-5058c86c72eb___8e2832fe2240fbb87c4576768e556537.svg" alt="Copy Icon"></p>
