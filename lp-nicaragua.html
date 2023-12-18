@@ -13,20 +13,20 @@
     <div id="app">
         <div class="gallery" v-if="estado">
             <div class="card" v-for="promos in promosFiltradasNI"
-            @click="toggleDetails(promos.id, promos.startDate, promos.endDate, promos.coupon)"
-                :class="['card', { 'card-clicked': clickedPromoId === promos.id && isPromoActive(promos.startDate, promos.endDate).isActive }, { 'card-expired': isPromoActive(promos.startDate, promos.endDate).hasEnded }]"
-                :style="{ 'cursor': isPromoActive(promos.startDate, promos.endDate).isActive ? 'pointer' : 'default' }">
+                @mouseover="toggleDetails(promos.id, promos.startDate, promos.endDate, promos.coupon)"
+                @mouseleave="hideDetails()"
+                :class="['card', { 'card-clicked': clickedPromoId === promos.id && isPromoActive(promos.startDate, promos.endDate).isActive }, { 'card-expired': isPromoActive(promos.startDate, promos.endDate).hasEnded }]">
                 <img :src="promos.coverImage" class="card-img-top" :alt="promos.title">
                 <div v-if="isPromoActive(promos.startDate, promos.endDate) && clickedPromoId === promos.id"
                     class="details">
                     <section class="details-container">
                         <p class="details-container__title">{{promos.title}}</p>
                         <p class="details-container__text">{{promos.description}}</p>
-                        <img class="details-container__image" :src="promos.productImage" alt="Promotion image"
-                            srcset="">
+                        <a :href="promos.link || ''"><img class="details-container__image" :src="promos.productImage" alt="Promotion image"
+                            srcset=""></a>
                         <span class="details-container__coupon-tittle">Cupón</span>
-                        <p class="details-container__coupon">
-                            {{promos.coupon}}</p>
+                        <p class="details-container__coupon" @click="copyCoupon(promos.coupon)">
+                            {{promos.coupon}} <img src="https://siman.vtexassets.com/assets/vtex.file-manager-graphql/images/0451b3b9-7494-4a04-b3a7-5058c86c72eb___8e2832fe2240fbb87c4576768e556537.svg" alt="Copy Icon"></p>
                         <p class="details-container__countdown"
                             v-if="getPromoCountdown(promos.startDate, promos.endDate)">
                             {{ getPromoCountdown(promos.startDate, promos.endDate) }}

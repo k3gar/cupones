@@ -17,29 +17,27 @@ new Vue({
     toggleDetails(promoId, startDate, endDate, coupon) {
       const isActiveToday = this.isPromoActive(startDate, endDate).isActive;
   
-      if (this.clickedPromoId === promoId && isActiveToday) {
-        this.clickedPromoId = null; // Oculta los detalles si ya se hizo clic y está activa hoy
-      } else {
-        this.clickedPromoId = isActiveToday ? promoId : null; // Muestra los detalles si está activa hoy
+      if (isActiveToday) {
+        this.clickedPromoId = isActiveToday ? promoId : null;
   
         // Si está activa hoy, copia el código de la promoción al portapapeles
-        if (isActiveToday) {
+/*         if (isActiveToday) {
           this.copyToClipboard(coupon);
-
+  
           setTimeout(() => {
             Swal.fire({
               icon: 'success',
               position: "top",
               title: 'Código copiado al portapapeles',
               showConfirmButton: false,
-              timer: 1500 , // El mensaje se mostrará durante 1.5 segundos
+              timer: 1500, // El mensaje se mostrará durante 1.5 segundos
               customClass: {
                 title: 'custom-title-class',
                 content: 'custom-content-class'
               }
             });
           }, 1500)
-        }
+        } */
       }
     },
     getPromoCountdown(startDate, endDate) {
@@ -94,6 +92,34 @@ new Vue({
       document.execCommand('copy');
       document.body.removeChild(textarea);
     },
+
+    hideDetails() {
+      this.clickedPromoId = null;
+  
+      // Agrega la clase para la animación de salida
+      const detailsElement = document.querySelector('.details');
+      detailsElement.classList.add('fadeOut');
+  
+      // Después de que termine la animación, quita la clase
+      setTimeout(() => {
+        detailsElement.classList.remove('fadeOut');
+      }, 500); // El tiempo debe coincidir con la duración de la animación
+    },
+    copyCoupon(coupon) {
+      this.copyToClipboard(coupon);
+
+      Swal.fire({
+        icon: 'success',
+        position: 'top',
+        title: 'Código copiado al portapapeles',
+        showConfirmButton: false,
+        timer: 1000,
+        customClass: {
+          title: 'custom-title-class',
+          content: 'custom-content-class'
+        }
+      });
+    },
   
   },
 
@@ -103,6 +129,7 @@ new Vue({
       .then(data => {
         // Asumiendo que cada elemento en data.data es un país con sus propias cards
         const promosPorPais = data.data;
+        console.log(promosPorPais)
 
         // Obtener información de cada país
         this.promosFiltradas = promosPorPais.map(pais => {
@@ -117,6 +144,7 @@ new Vue({
               startDate: promo.start_date,
               endDate: promo.end_date,
               coupon: promo.coupon,
+              link: promo.link,
               coverImage: promo.cover_image.data.attributes.url,
               productImage: productImageData ? productImageData.attributes.url : "https://siman.vtexassets.com/assets/vtex.file-manager-graphql/images/a2cc640d-04c5-4d7c-94a4-3e96fb18daa1___ab337472217644aad78268909ac9c42e.svg",
             };
