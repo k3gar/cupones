@@ -23,7 +23,7 @@
                         <p class="details-container__title">{{promos.title}}</p>
                         <p class="details-container__text">{{promos.description}}</p>
                         <div v-if="promos.link">
-                            <a :href="promos.link">
+                            <a :href="promos.link" target="_blank">
                               <img class="details-container__image" :src="promos.productImage" alt="Promotion image" srcset="">
                             </a>
                           </div>
